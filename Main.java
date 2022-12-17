@@ -6,8 +6,8 @@
 
 // TODO:
 // Add more effects
-// Add error handling for incorrect file types
-// Give file extension selection option
+// test webp, jfif, bmp images to make sure they work
+// Give file extension selection option (tried not sure how)
 // Add additional option to let random pixel color to ignore white pixels (maybe different shades of white could screw this up)
 // Make chromatic aberration work with other file types besides transparent PNGs
 //     Let the user select colors for chromatic aberration
@@ -16,6 +16,8 @@ import java.awt.event.*;
 import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
@@ -59,10 +61,12 @@ public class Main {
     effects.add(chromaticAberration);
 
     // Open Image and display on screen
-    openMenuItem.addActionListener(new ActionListener() { // TODO: Add proper error handling when incorrect file is
-                                                          // selected
+    openMenuItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
+        FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("webp","jfif","jpeg","png","jpg","gif","bmp","JPG","JPEG","PNG","GIF","BMP");
         JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(imageFilter);
+        fileChooser.setAcceptAllFileFilterUsed(false);
         fileChooser.showOpenDialog(frame);
         File file = fileChooser.getSelectedFile();
         try {
@@ -242,5 +246,7 @@ public class Main {
   }
 }
 
-// Randomize colors only changes 25% of the pixels
-// Added chromatic aberration, but it only works with 
+// Changes:
+/*
+ * Added a filter for file input to disable all files from being selected
+ */
