@@ -3,11 +3,14 @@
 
 // Known bugs:
 // 1. For the same image: open > close > open results in a blank image until you load a different image first
+// 2. Cannot save steganographic images via the save button (low quality work around was added to open a save dialog after the message is hidden)
+// 3. Steganography only works with .jpg
 
 // TODO:
+// sort effects by file type?
 // Add more effects
-// test webp, jfif, bmp images to make sure they work
-// Give file extension selection option (tried not sure how)
+//     Convert image to ascii art
+// Give file extension selection option (tried not sure how) instead of user manually entering them
 // Add additional option to let random pixel color to ignore white pixels (maybe different shades of white could screw this up)
 // Make chromatic aberration work with other file types besides transparent PNGs
 //     Let the user select colors for chromatic aberration
@@ -22,7 +25,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 
-public class Main {
+public class Main extends JFrame {
+
   public static void main(String[] args) {
     final JLabel labelImage = new JLabel();
     // Change theme to match system
@@ -48,6 +52,8 @@ public class Main {
     JMenuItem invertColors = new JMenuItem("Invert Colors");
     JMenuItem randomColors = new JMenuItem("Randomize Colors");
     JMenuItem chromaticAberration = new JMenuItem("Chromatic Aberration ");
+    JMenuItem steganography = new JMenuItem("Encode Steganographic Message");
+    JMenuItem decodeSecretMessage = new JMenuItem("Decode Steganographic Message");
 
     // Menu bar choices
     menuBar.add(fileMenu);
@@ -59,11 +65,14 @@ public class Main {
     effects.add(invertColors);
     effects.add(randomColors);
     effects.add(chromaticAberration);
+    effects.add(steganography);
+    effects.add(decodeSecretMessage);
 
     // Open Image and display on screen
     openMenuItem.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
-        FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("webp","jfif","jpeg","png","jpg","gif","bmp","JPG","JPEG","PNG","GIF","BMP");
+        FileNameExtensionFilter imageFilter = new FileNameExtensionFilter("jfif", "jpeg", "png", "jpg", "gif",
+            "bmp", "JPG", "JPEG", "PNG", "GIF", "BMP");
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter(imageFilter);
         fileChooser.setAcceptAllFileFilterUsed(false);
@@ -94,6 +103,7 @@ public class Main {
       public void actionPerformed(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.showSaveDialog(frame);
+
         File file = fileChooser.getSelectedFile();
         try {
           Icon icon = labelImage.getIcon();
@@ -240,13 +250,101 @@ public class Main {
       }
     });
 
+    // Use steganography to hide a message in the image via the LSB
+    // ENCODING AND DECODING CREDIT TO https://github.com/vishal-kataria/ <3 thank
+    // you so much
+    steganography.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Icon icon = labelImage.getIcon();
+        BufferedImage sourceImage = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(),
+            BufferedImage.TYPE_INT_ARGB);
+        Graphics gfx = sourceImage.createGraphics();
+        icon.paintIcon(null, gfx, 0, 0);
+        gfx.dispose();
+
+        BufferedImage embeddedImage = null;
+        BufferedImage embeddedImage1 = null;
+        String mess = JOptionPane.showInputDialog("Enter a message to hide in the image");
+        if (mess == null)
+          return;
+
+        embeddedImage = sourceImage.getSubimage(0, 0, sourceImage.getWidth(), sourceImage.getHeight());
+
+        SteganoImgProcess sip = new SteganoImgProcess();
+        embeddedImage1 = sip.encode(sourceImage, embeddedImage, sourceImage.getWidth(), sourceImage.getHeight(), mess);
+
+        String[] options = { "Yes", "No" };
+        int response = JOptionPane.showOptionDialog(null, "Do you want to save the image?", "Save Image",
+            JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE,
+            null, options, options[0]);
+
+        // Check the user's response
+        if (response == 0) {
+          // The user selected "Yes", so save the image
+          JFileChooser fileChooser = new JFileChooser();
+          fileChooser.showSaveDialog(frame);
+
+          File f = fileChooser.getSelectedFile();
+          try {
+            if (f.exists())
+              f.delete();
+            ImageIO.write(embeddedImage, "png".toUpperCase(), f);
+          } catch (Exception ex) {
+          }
+          System.out.println("Saving image...");
+        } else {
+          // The user selected "No" or closed the dialog
+
+          System.out.println("Not saving image.");
+        }
+
+        // erase old picture
+        frame.getContentPane().removeAll();
+        frame.repaint();
+
+        // need to convert to ImageIcon now
+        ImageIcon ic = new ImageIcon(embeddedImage1);
+        labelImage.setIcon(ic);
+        frame.add(labelImage);
+        frame.setVisible(true);
+
+      }
+    });
+
+    // Decodes the steganographic message hidden in the image
+    decodeSecretMessage.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Icon icon = labelImage.getIcon();
+        BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics gfx = image.createGraphics();
+        icon.paintIcon(null, gfx, 0, 0);
+        gfx.dispose();
+
+        SteganoImgProcess sip = new SteganoImgProcess();
+        String vk = sip.decode(image, image.getWidth(), image.getHeight());
+        System.out.println(vk);
+
+        // erase old picture
+        frame.getContentPane().removeAll();
+        frame.repaint();
+
+        // need to convert to ImageIcon now
+        ImageIcon ic = new ImageIcon(image);
+        labelImage.setIcon(ic);
+        frame.add(labelImage);
+        frame.setVisible(true);
+      }
+    });
+
     frame.setJMenuBar(menuBar);
     frame.setSize(1000, 700);
     frame.setVisible(true);
   }
+
 }
 
 // Changes:
 /*
  * Added a filter for file input to disable all files from being selected
+ * Added steganography encode and decode
  */
