@@ -7,12 +7,14 @@
 // 3. Steganography only works with .jpg
 
 // TODO:
+// test to see if steganography works with other file types
 // sort effects by file type?
 // Add more effects
 //     Convert image to ascii art
 // Give file extension selection option (tried not sure how) instead of user manually entering them
 // Add additional option to let random pixel color to ignore white pixels (maybe different shades of white could screw this up)
 // Make chromatic aberration work with other file types besides transparent PNGs
+//     (if direction = x move picture left by x, etc)
 //     Let the user select colors for chromatic aberration
 
 import java.awt.event.*;
@@ -51,8 +53,8 @@ public class Main extends JFrame {
     JMenu effects = new JMenu("Effects");
     JMenuItem invertColors = new JMenuItem("Invert Colors");
     JMenuItem randomColors = new JMenuItem("Randomize Colors");
-    JMenuItem chromaticAberration = new JMenuItem("Chromatic Aberration ");
-    JMenuItem steganography = new JMenuItem("Encode Steganographic Message");
+    JMenuItem chromaticAberration = new JMenuItem("Chromatic Aberration (trans PNG only) ");
+    JMenuItem steganography = new JMenuItem("Encode Steganographic Message (JPG only)");
     JMenuItem decodeSecretMessage = new JMenuItem("Decode Steganographic Message");
 
     // Menu bar choices
@@ -322,7 +324,7 @@ public class Main extends JFrame {
 
         SteganoImgProcess sip = new SteganoImgProcess();
         String vk = sip.decode(image, image.getWidth(), image.getHeight());
-        System.out.println(vk);
+        JOptionPane.showMessageDialog(frame,vk);
 
         // erase old picture
         frame.getContentPane().removeAll();
@@ -342,9 +344,3 @@ public class Main extends JFrame {
   }
 
 }
-
-// Changes:
-/*
- * Added a filter for file input to disable all files from being selected
- * Added steganography encode and decode
- */

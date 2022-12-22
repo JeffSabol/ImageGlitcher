@@ -110,13 +110,13 @@ public class SteganoImgProcess {
 		}
 		
 		String check = new String(decodedMsg);
-		System.out.println(check + " " + check.length());
-		if (check.compareTo("!encoded!") == 0) {
-			System.out.println("true");
-			return true;
-		} else {
-			return false;
-		}
+		// System.out.println(check + " " + check.length());
+		// if (check.compareTo("!encoded!") == 0) {
+		// 	System.out.println("true");
+		// 	return true;
+		// } else {
+		// 	return false;
+		// }
 		
 	} 
 	
