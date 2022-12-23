@@ -7,15 +7,23 @@
 // 3. Steganography only works with .jpg
 
 // TODO:
+// Apply more OOP principles
+//    move all the ActionListeners to their own respective classes
+//    move menubar to it's own class
 // test to see if steganography works with other file types
 // sort effects by file type?
 // Add more effects
-//     Convert image to ascii art
+//    Convert image to ascii art
+//        (allows user to save as txt file)
+//    Pixel line scratching  
+//        (let user input amount of scratches, select random rows and columns to scratch,for each pixel in selecct row/column, select random pixel in set random length to that pixel)
+//    Fractal generator
+//        (takes image input as a seed and will always generate the same fractal per image)
 // Give file extension selection option (tried not sure how) instead of user manually entering them
 // Add additional option to let random pixel color to ignore white pixels (maybe different shades of white could screw this up)
 // Make chromatic aberration work with other file types besides transparent PNGs
-//     (if direction = x move picture left by x, etc)
-//     Let the user select colors for chromatic aberration
+//    (if direction = x move picture left by x, etc)
+//    Let the user select colors for chromatic aberration
 
 import java.awt.event.*;
 import java.io.*;
@@ -42,24 +50,23 @@ public class Main extends JFrame {
     JFrame frame = new JFrame("Data Bender");
     frame.setIconImage(new ImageIcon("Glitch.png").getImage());
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+    
     // Create a file open menu
     JMenuBar menuBar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");
     JMenuItem openMenuItem = new JMenuItem("Open Image");
     JMenuItem clearImageItem = new JMenuItem("Clear Image");
     JMenuItem saveImageItem = new JMenuItem("Save Image");
-    JMenu helpItem = new JMenu("Help");
     JMenu effects = new JMenu("Effects");
     JMenuItem invertColors = new JMenuItem("Invert Colors");
     JMenuItem randomColors = new JMenuItem("Randomize Colors");
     JMenuItem chromaticAberration = new JMenuItem("Chromatic Aberration (trans PNG only) ");
     JMenuItem steganography = new JMenuItem("Encode Steganographic Message (JPG only)");
     JMenuItem decodeSecretMessage = new JMenuItem("Decode Steganographic Message");
+    JMenu helpItem = new JMenu("Help");
 
     // Menu bar choices
     menuBar.add(fileMenu);
-    menuBar.add(helpItem);
     fileMenu.add(openMenuItem);
     fileMenu.add(clearImageItem);
     fileMenu.add(saveImageItem);
@@ -69,6 +76,17 @@ public class Main extends JFrame {
     effects.add(chromaticAberration);
     effects.add(steganography);
     effects.add(decodeSecretMessage);
+    menuBar.add(helpItem);
+
+    // Add icons
+    openMenuItem.setIcon(new ImageIcon("./IconImages/Open.png"));   // from https://www.flaticon.com/free-icon/open-folder-with-document_32743 (website told me to add attribution)
+    saveImageItem.setIcon(new ImageIcon("./IconImages/Save.png"));
+    clearImageItem.setIcon(new ImageIcon("./IconImages/Wipe.png")); // from http://www.onlinewebfonts.com/icon (website told me to add attribution)
+    invertColors.setIcon(new ImageIcon("./IconImages/Inverse.png"));
+    randomColors.setIcon(new ImageIcon("./IconImages/Random.png"));
+    chromaticAberration.setIcon(new ImageIcon("./IconImages/CB.png"));
+    steganography.setIcon(new ImageIcon("./IconImages/Hide.png"));
+    decodeSecretMessage.setIcon(new ImageIcon("./IconImages/Show.png"));
 
     // Open Image and display on screen
     openMenuItem.addActionListener(new ActionListener() {
@@ -324,7 +342,7 @@ public class Main extends JFrame {
 
         SteganoImgProcess sip = new SteganoImgProcess();
         String vk = sip.decode(image, image.getWidth(), image.getHeight());
-        JOptionPane.showMessageDialog(frame,vk);
+        JOptionPane.showMessageDialog(frame, vk);
 
         // erase old picture
         frame.getContentPane().removeAll();
