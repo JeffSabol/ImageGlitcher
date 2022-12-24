@@ -7,6 +7,8 @@
 // 3. Steganography only works with .jpg
 
 // TODO:
+// Fix or remove the help menu. (It's damn near useless anyways)
+// Allow user to specify randomize pixel color percentage
 // Apply more OOP principles
 //    move all the ActionListeners to their own respective classes
 //    move menubar to it's own class
@@ -15,8 +17,6 @@
 // Add more effects
 //    Convert image to ascii art
 //        (allows user to save as txt file)
-//    Pixel line scratching  
-//        (let user input amount of scratches, select random rows and columns to scratch,for each pixel in selecct row/column, select random pixel in set random length to that pixel)
 //    Fractal generator
 //        (takes image input as a seed and will always generate the same fractal per image)
 // Give file extension selection option (tried not sure how) instead of user manually entering them
@@ -27,6 +27,8 @@
 
 import java.awt.event.*;
 import java.io.*;
+import java.util.Random;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -50,20 +52,21 @@ public class Main extends JFrame {
     JFrame frame = new JFrame("Data Bender");
     frame.setIconImage(new ImageIcon("Glitch.png").getImage());
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    
+
     // Create a file open menu
     JMenuBar menuBar = new JMenuBar();
     JMenu fileMenu = new JMenu("File");
     JMenuItem openMenuItem = new JMenuItem("Open Image");
     JMenuItem clearImageItem = new JMenuItem("Clear Image");
     JMenuItem saveImageItem = new JMenuItem("Save Image");
+    JMenu helpItem = new JMenu("Help");
     JMenu effects = new JMenu("Effects");
     JMenuItem invertColors = new JMenuItem("Invert Colors");
     JMenuItem randomColors = new JMenuItem("Randomize Colors");
     JMenuItem chromaticAberration = new JMenuItem("Chromatic Aberration (trans PNG only) ");
     JMenuItem steganography = new JMenuItem("Encode Steganographic Message (JPG only)");
     JMenuItem decodeSecretMessage = new JMenuItem("Decode Steganographic Message");
-    JMenu helpItem = new JMenu("Help");
+    JMenuItem pixelScratch = new JMenuItem("Pixel Scratch image");
 
     // Menu bar choices
     menuBar.add(fileMenu);
@@ -76,17 +79,22 @@ public class Main extends JFrame {
     effects.add(chromaticAberration);
     effects.add(steganography);
     effects.add(decodeSecretMessage);
+    effects.add(pixelScratch);
     menuBar.add(helpItem);
 
     // Add icons
-    openMenuItem.setIcon(new ImageIcon("./IconImages/Open.png"));   // from https://www.flaticon.com/free-icon/open-folder-with-document_32743 (website told me to add attribution)
+    openMenuItem.setIcon(new ImageIcon("./IconImages/Open.png")); // from
+                                                                  // https://www.flaticon.com/free-icon/open-folder-with-document_32743
+                                                                  // (website told me to add attribution)
     saveImageItem.setIcon(new ImageIcon("./IconImages/Save.png"));
-    clearImageItem.setIcon(new ImageIcon("./IconImages/Wipe.png")); // from http://www.onlinewebfonts.com/icon (website told me to add attribution)
+    clearImageItem.setIcon(new ImageIcon("./IconImages/Wipe.png")); // from http://www.onlinewebfonts.com/icon (website
+                                                                    // told me to add attribution)
     invertColors.setIcon(new ImageIcon("./IconImages/Inverse.png"));
     randomColors.setIcon(new ImageIcon("./IconImages/Random.png"));
     chromaticAberration.setIcon(new ImageIcon("./IconImages/CB.png"));
     steganography.setIcon(new ImageIcon("./IconImages/Hide.png"));
     decodeSecretMessage.setIcon(new ImageIcon("./IconImages/Show.png"));
+    pixelScratch.setIcon(new ImageIcon("./IconImages/Scratch.png"));
 
     // Open Image and display on screen
     openMenuItem.addActionListener(new ActionListener() {
@@ -273,6 +281,7 @@ public class Main extends JFrame {
     // Use steganography to hide a message in the image via the LSB
     // ENCODING AND DECODING CREDIT TO https://github.com/vishal-kataria/ <3 thank
     // you so much
+    // works with JPG, GIF
     steganography.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         Icon icon = labelImage.getIcon();
@@ -343,6 +352,80 @@ public class Main extends JFrame {
         SteganoImgProcess sip = new SteganoImgProcess();
         String vk = sip.decode(image, image.getWidth(), image.getHeight());
         JOptionPane.showMessageDialog(frame, vk);
+
+        // erase old picture
+        frame.getContentPane().removeAll();
+        frame.repaint();
+
+        // need to convert to ImageIcon now
+        ImageIcon ic = new ImageIcon(image);
+        labelImage.setIcon(ic);
+        frame.add(labelImage);
+        frame.setVisible(true);
+      }
+    });
+
+    // Applies pixel scratching to the image
+    pixelScratch.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Icon icon = labelImage.getIcon();
+        BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics gfx = image.createGraphics();
+        icon.paintIcon(null, gfx, 0, 0);
+        gfx.dispose();
+
+        // Prompt the user to enter the value for vertical scratches
+        String var1Input = JOptionPane.showInputDialog("Enter the amount of vertical scratches:");
+        int vert = Integer.parseInt(var1Input);
+
+        // Prompt the user to enter the value for horizontal scratches
+        String var2Input = JOptionPane.showInputDialog("Enter the amount of horizontal scratches:");
+        int hori = Integer.parseInt(var2Input);
+
+        Random random = new Random();
+
+        // get the dimensions of the image
+        int width = image.getWidth();
+        int height = image.getHeight();
+
+        for (int x = 0; x < hori; x++) {
+          // select a random row
+          int row = random.nextInt(height);
+
+          // select a random pixel in the row
+          int column = random.nextInt(width);
+
+          // get the pixel value at the selected position
+          int pixel = image.getRGB(column, row);
+
+          // generate a random length for the pixel color
+          int length = random.nextInt(width - column);
+
+          // set the pixel value for the specified length
+          for (int i = column; i < column + length; i++) {
+            image.setRGB(i, row, pixel);
+          }
+
+          for (int v = 0; v < vert; v++) {
+            // select a random column
+            int column1 = random.nextInt(width);
+
+            // select a random pixel in the column
+            int row1 = random.nextInt(height);
+
+            // get the pixel value at the selected position
+            int pixel1 = image.getRGB(column1, row1);
+
+            // generate a random length for the pixel color
+            int length1 = random.nextInt(height - row1);
+
+            // set the pixel value for the specified length
+            for (int i = row1; i < row1 + length1; i++) {
+              image.setRGB(column1, i, pixel1);
+            }
+          }
+
+        }
 
         // erase old picture
         frame.getContentPane().removeAll();
