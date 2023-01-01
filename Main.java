@@ -7,7 +7,7 @@
 // 3. Steganography only works with .jpg
 
 // TODO:
-// Fix or remove the help menu. (It's damn near useless anyways)
+// add view zooming (if image is too big it will be cut off from the user's view)
 // Allow user to specify randomize pixel color percentage
 // Apply more OOP principles
 //    move all the ActionListeners to their own respective classes
@@ -34,8 +34,10 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.Kernel;
+import java.awt.image.ConvolveOp;
 
 public class Main extends JFrame {
 
@@ -59,7 +61,7 @@ public class Main extends JFrame {
     JMenuItem openMenuItem = new JMenuItem("Open Image");
     JMenuItem clearImageItem = new JMenuItem("Clear Image");
     JMenuItem saveImageItem = new JMenuItem("Save Image");
-    JMenu helpItem = new JMenu("Help");
+    // JMenu helpItem = new JMenu("Help"); // broke when I added icons to the menu
     JMenu effects = new JMenu("Effects");
     JMenuItem invertColors = new JMenuItem("Invert Colors");
     JMenuItem randomColors = new JMenuItem("Randomize Colors");
@@ -67,6 +69,8 @@ public class Main extends JFrame {
     JMenuItem steganography = new JMenuItem("Encode Steganographic Message (JPG only)");
     JMenuItem decodeSecretMessage = new JMenuItem("Decode Steganographic Message");
     JMenuItem pixelScratch = new JMenuItem("Pixel Scratch image");
+    JMenuItem gBlur = new JMenuItem("Gaussian Blur"); // Actually an approximation (・人・)
+    JMenuItem glitch = new JMenuItem("Glitch");
 
     // Menu bar choices
     menuBar.add(fileMenu);
@@ -80,7 +84,9 @@ public class Main extends JFrame {
     effects.add(steganography);
     effects.add(decodeSecretMessage);
     effects.add(pixelScratch);
-    menuBar.add(helpItem);
+    effects.add(gBlur);
+    effects.add(glitch);
+    // menuBar.add(helpItem);
 
     // Add icons
     openMenuItem.setIcon(new ImageIcon("./IconImages/Open.png")); // from
@@ -95,6 +101,8 @@ public class Main extends JFrame {
     steganography.setIcon(new ImageIcon("./IconImages/Hide.png"));
     decodeSecretMessage.setIcon(new ImageIcon("./IconImages/Show.png"));
     pixelScratch.setIcon(new ImageIcon("./IconImages/Scratch.png"));
+    gBlur.setIcon(new ImageIcon("./IconImages/Blur.png"));
+    glitch.setIcon(new ImageIcon("./IconImages/Glitch.png"));
 
     // Open Image and display on screen
     openMenuItem.addActionListener(new ActionListener() {
@@ -147,14 +155,15 @@ public class Main extends JFrame {
       }
     });
 
-    // open basic help instructions
-    helpItem.addActionListener(new ActionListener() {
-      public void actionPerformed(ActionEvent e) {
-        JOptionPane.showMessageDialog(frame, "In the menu: File > Open Image > select your image\n" +
-            "For a glitch effect after uploading your file do\n" +
-            "In the menu: Effect > select your desired effect");
-      }
-    });
+    // // open basic help instructions
+    // helpItem.addActionListener(new ActionListener() {
+    // public void actionPerformed(ActionEvent e) {
+    // JOptionPane.showMessageDialog(frame, "In the menu: File > Open Image > select
+    // your image\n" +
+    // "For a glitch effect after uploading your file do\n" +
+    // "In the menu: Effect > select your desired effect");
+    // }
+    // });
 
     invertColors.addActionListener(new ActionListener() {
       public void actionPerformed(ActionEvent e) {
@@ -405,27 +414,92 @@ public class Main extends JFrame {
           for (int i = column; i < column + length; i++) {
             image.setRGB(i, row, pixel);
           }
-
-          for (int v = 0; v < vert; v++) {
-            // select a random column
-            int column1 = random.nextInt(width);
-
-            // select a random pixel in the column
-            int row1 = random.nextInt(height);
-
-            // get the pixel value at the selected position
-            int pixel1 = image.getRGB(column1, row1);
-
-            // generate a random length for the pixel color
-            int length1 = random.nextInt(height - row1);
-
-            // set the pixel value for the specified length
-            for (int i = row1; i < row1 + length1; i++) {
-              image.setRGB(column1, i, pixel1);
-            }
-          }
-
         }
+
+        for (int v = 0; v < vert; v++) {
+          // select a random column
+          int column1 = random.nextInt(width);
+
+          // select a random pixel in the column
+          int row1 = random.nextInt(height);
+
+          // get the pixel value at the selected position
+          int pixel1 = image.getRGB(column1, row1);
+
+          // generate a random length for the pixel color
+          int length1 = random.nextInt(height - row1);
+
+          // set the pixel value for the specified length
+          for (int i = row1; i < row1 + length1; i++) {
+            image.setRGB(column1, i, pixel1);
+          }
+        }
+
+        // erase old picture
+        frame.getContentPane().removeAll();
+        frame.repaint();
+
+        // need to convert to ImageIcon now
+        ImageIcon ic = new ImageIcon(image);
+        labelImage.setIcon(ic);
+        frame.add(labelImage);
+        frame.setVisible(true);
+      }
+    });
+
+    // Gaussian Blur
+    gBlur.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Icon icon = labelImage.getIcon();
+        BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics gfx = image.createGraphics();
+        icon.paintIcon(null, gfx, 0, 0);
+        gfx.dispose();
+
+        // BLUR
+        float[] matrix = {
+            1 / 16f, 1 / 8f, 1 / 16f,
+            1 / 8f, 1 / 4f, 1 / 8f,
+            1 / 16f, 1 / 8f, 1 / 16f
+        };
+
+        Kernel kernel = new Kernel(3, 3, matrix);
+
+        ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+        image = op.filter(image, null);
+
+        // erase old picture
+        frame.getContentPane().removeAll();
+        frame.repaint();
+
+        // need to convert to ImageIcon now
+        ImageIcon ic = new ImageIcon(image);
+        labelImage.setIcon(ic);
+        frame.add(labelImage);
+        frame.setVisible(true);
+      }
+    });
+
+    glitch.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        Icon icon = labelImage.getIcon();
+        BufferedImage image = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics gfx = image.createGraphics();
+        icon.paintIcon(null, gfx, 0, 0);
+        gfx.dispose();
+
+        float[] matrix = {
+            -2, -1, 0,
+            -1, 1, 1,
+            0, 1, 2
+        };
+
+        Kernel kernel = new Kernel(3, 3, matrix);
+
+        // Apply the convolution matrix to the image
+        ConvolveOp op = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+        image = op.filter(image, null);
+        image = op.filter(image, null);
 
         // erase old picture
         frame.getContentPane().removeAll();
