@@ -6,6 +6,8 @@ DataBender is a Java-based GUI application that allows you to manipulate images 
 * Encode and decode a steganographic image
 * Apply chromatic aberration to an image
 * (More effects are and refinement of techniques are planned)
+* Apply a blur effect
+* Apply a line bold glitch effect
 
 ## Requirements
 In order to use DataBender, you will need the following:
@@ -13,6 +15,7 @@ In order to use DataBender, you will need the following:
 Java SE 8 or later
 
 A compatible operating system (Windows, Mac, Linux)
+<sub>After some testing it turns most files will not work on Linux, but some do</sub>
 
 ## Getting Started
 To get started with DataBender, follow these steps:
@@ -38,3 +41,7 @@ I welcome contributions to DataBender! If you have an idea for a new feature or 
 [![HzhDS5v.md.png](https://iili.io/HzhDS5v.md.png)](https://freeimage.host/i/HzhDS5v)
 [![Hzhmacu.md.png](https://iili.io/Hzhmacu.md.png)](https://freeimage.host/i/Hzhmacu)
 [![HzhmjKF.md.png](https://iili.io/HzhmjKF.md.png)](https://freeimage.host/i/HzhmjKF)
+[![HYqfLGe.png](https://iili.io/HYqfLGe.png)](https://freeimage.host/)
+[![HYqBz5x.png](https://iili.io/HYqBz5x.png)](https://freeimage.host/)
+[![HYqfG3J.md.png](https://iili.io/HYqfG3J.md.png)](https://freeimage.host/i/HYqfG3J)
+[![HYqfxEu.md.png](https://iili.io/HYqfxEu.md.png)](https://freeimage.host/i/HYqfxEu)
