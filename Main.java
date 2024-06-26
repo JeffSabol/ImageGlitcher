@@ -515,17 +515,9 @@ public class Main extends JFrame {
     frame.setSize(1000, 700);
     frame.setVisible(true);
   }
- 
-  private static boolean isWindows() {
-    return System.getProperty("os.name").toLowerCase().contains("win");
-  }
 
   private static Path getPath(String... parts) {
-    if (isWindows()) {
-      return Paths.get("DataBender", parts);
-    } else {
-      return Paths.get("", parts);
-    }
+    return Paths.get("", parts);
   }
 
   private static void checkFileExists(String path) {
