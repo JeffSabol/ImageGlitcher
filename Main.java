@@ -52,7 +52,7 @@ public class Main extends JFrame {
     }
 
     JFrame frame = new JFrame("Data Bender");
-    frame.setIconImage(new ImageIcon(getPath("DataBender", "Glitch.png").toString()).getImage());
+    frame.setIconImage(new ImageIcon(getPath("IconImages", "Glitch.png").toString()).getImage());
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     // Create a file open menu
@@ -90,17 +90,17 @@ public class Main extends JFrame {
     // menuBar.add(helpItem);
 
     // Add icons
-    openMenuItem.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Open.png").toString())); // from https://www.flaticon.com/free-icon/open-folder-with-document_32743
-    saveImageItem.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Save.png").toString()));
-    clearImageItem.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Wipe.png").toString())); // from http://www.onlinewebfonts.com/icon
-    invertColors.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Inverse.png").toString()));
-    randomColors.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Random.png").toString()));
-    chromaticAberration.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "CB.png").toString()));
-    steganography.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Hide.png").toString()));
-    decodeSecretMessage.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Show.png").toString()));
-    pixelScratch.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Scratch.png").toString()));
-    gBlur.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Blur.png").toString()));
-    glitch.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Glitch.png").toString()));
+    openMenuItem.setIcon(new ImageIcon(getPath("IconImages", "Open.png").toString())); // from https://www.flaticon.com/free-icon/open-folder-with-document_32743
+    saveImageItem.setIcon(new ImageIcon(getPath("IconImages", "Save.png").toString()));
+    clearImageItem.setIcon(new ImageIcon(getPath("IconImages", "Wipe.png").toString())); // from http://www.onlinewebfonts.com/icon
+    invertColors.setIcon(new ImageIcon(getPath("IconImages", "Inverse.png").toString()));
+    randomColors.setIcon(new ImageIcon(getPath("IconImages", "Random.png").toString()));
+    chromaticAberration.setIcon(new ImageIcon(getPath("IconImages", "CB.png").toString()));
+    steganography.setIcon(new ImageIcon(getPath("IconImages", "Hide.png").toString()));
+    decodeSecretMessage.setIcon(new ImageIcon(getPath("IconImages", "Show.png").toString()));
+    pixelScratch.setIcon(new ImageIcon(getPath("IconImages", "Scratch.png").toString()));
+    gBlur.setIcon(new ImageIcon(getPath("IconImages", "Blur.png").toString()));
+    glitch.setIcon(new ImageIcon(getPath("IconImages", "Glitch.png").toString()));
 
     // Open Image and display on screen
     openMenuItem.addActionListener(new ActionListener() {
@@ -516,8 +516,16 @@ public class Main extends JFrame {
     frame.setVisible(true);
   }
 
+  private static boolean isWindows() {
+    return System.getProperty("os.name").toLowerCase().contains("win");
+  }
+
   private static Path getPath(String... parts) {
-    return Paths.get("", parts);
+    if (isWindows()) {
+      return Paths.get("DataBender", parts);
+    } else {
+      return Paths.get("", parts);
+    }
   }
 
   private static void checkFileExists(String path) {
