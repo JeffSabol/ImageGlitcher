@@ -52,7 +52,7 @@ public class Main extends JFrame {
     }
 
     JFrame frame = new JFrame("Data Bender");
-    frame.setIconImage(new ImageIcon(getPath("IconImages", "Glitch.png").toString()).getImage());
+    frame.setIconImage(new ImageIcon(getPath("Glitch.png").toString()).getImage());
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     // Create a file open menu
@@ -515,7 +515,7 @@ public class Main extends JFrame {
     frame.setSize(1000, 700);
     frame.setVisible(true);
   }
-
+ 
   private static boolean isWindows() {
     return System.getProperty("os.name").toLowerCase().contains("win");
   }
