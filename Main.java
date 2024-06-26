@@ -24,9 +24,9 @@
 // Make chromatic aberration work with other file types besides transparent PNGs
 //    (if direction = x move picture left by x, etc)
 //    Let the user select colors for chromatic aberration
-
 import java.awt.event.*;
 import java.io.*;
+import java.nio.file.*;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -52,7 +52,7 @@ public class Main extends JFrame {
     }
 
     JFrame frame = new JFrame("Data Bender");
-    frame.setIconImage(new ImageIcon("Glitch.png").getImage());
+    frame.setIconImage(new ImageIcon(getPath("DataBender", "Glitch.png").toString()).getImage());
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
     // Create a file open menu
@@ -61,6 +61,7 @@ public class Main extends JFrame {
     JMenuItem openMenuItem = new JMenuItem("Open Image");
     JMenuItem clearImageItem = new JMenuItem("Clear Image");
     JMenuItem saveImageItem = new JMenuItem("Save Image");
+
     // JMenu helpItem = new JMenu("Help"); // broke when I added icons to the menu
     JMenu effects = new JMenu("Effects");
     JMenuItem invertColors = new JMenuItem("Invert Colors");
@@ -89,20 +90,17 @@ public class Main extends JFrame {
     // menuBar.add(helpItem);
 
     // Add icons
-    openMenuItem.setIcon(new ImageIcon("./IconImages/Open.png")); // from
-                                                                  // https://www.flaticon.com/free-icon/open-folder-with-document_32743
-                                                                  // (website told me to add attribution)
-    saveImageItem.setIcon(new ImageIcon("./IconImages/Save.png"));
-    clearImageItem.setIcon(new ImageIcon("./IconImages/Wipe.png")); // from http://www.onlinewebfonts.com/icon (website
-                                                                    // told me to add attribution)
-    invertColors.setIcon(new ImageIcon("./IconImages/Inverse.png"));
-    randomColors.setIcon(new ImageIcon("./IconImages/Random.png"));
-    chromaticAberration.setIcon(new ImageIcon("./IconImages/CB.png"));
-    steganography.setIcon(new ImageIcon("./IconImages/Hide.png"));
-    decodeSecretMessage.setIcon(new ImageIcon("./IconImages/Show.png"));
-    pixelScratch.setIcon(new ImageIcon("./IconImages/Scratch.png"));
-    gBlur.setIcon(new ImageIcon("./IconImages/Blur.png"));
-    glitch.setIcon(new ImageIcon("./IconImages/Glitch.png"));
+    openMenuItem.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Open.png").toString())); // from https://www.flaticon.com/free-icon/open-folder-with-document_32743
+    saveImageItem.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Save.png").toString()));
+    clearImageItem.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Wipe.png").toString())); // from http://www.onlinewebfonts.com/icon
+    invertColors.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Inverse.png").toString()));
+    randomColors.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Random.png").toString()));
+    chromaticAberration.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "CB.png").toString()));
+    steganography.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Hide.png").toString()));
+    decodeSecretMessage.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Show.png").toString()));
+    pixelScratch.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Scratch.png").toString()));
+    gBlur.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Blur.png").toString()));
+    glitch.setIcon(new ImageIcon(getPath("DataBender", "IconImages", "Glitch.png").toString()));
 
     // Open Image and display on screen
     openMenuItem.addActionListener(new ActionListener() {
@@ -518,4 +516,16 @@ public class Main extends JFrame {
     frame.setVisible(true);
   }
 
+  private static Path getPath(String... parts) {
+    return Paths.get("", parts);
+  }
+
+  private static void checkFileExists(String path) {
+    File file = new File(path);
+    if (file.exists()) {
+      System.out.println("File exists: " + path);
+    } else {
+      System.out.println("File not found: " + path);
+    }
+  }
 }
