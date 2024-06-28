@@ -32,7 +32,10 @@ Once you have DataBender up and running, you can begin using it to manipulate im
 ## Contributing
 I welcome contributions to DataBender! If you have an idea for a new feature or have found a bug that you'd like to fix, please feel free to open a pull request.
 
+
 ## Screenshots
+![debian](https://github.com/JeffSabol/DataBender/assets/34982031/5d17b880-1e8e-4c23-a8bf-f493832450d5)
+![debian_glitched](https://github.com/JeffSabol/DataBender/assets/34982031/07a17b18-1c9a-4fba-937f-5ced4fc6a3ba)
 [![HzhL9yB.md.png](https://iili.io/HzhL9yB.md.png)](https://freeimage.host/i/HzhL9yB)
 [![HzhQ7x1.md.png](https://iili.io/HzhQ7x1.md.png)](https://freeimage.host/i/HzhQ7x1)
 [![HzhZxLX.png](https://iili.io/HzhZxLX.png)](https://freeimage.host/)
