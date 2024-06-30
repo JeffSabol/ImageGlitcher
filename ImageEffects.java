@@ -78,7 +78,15 @@ public class ImageEffects {
                 }
             }
         }
-        updateImage(labelImage, image);
+
+        BufferedImage combinedImage = new BufferedImage(image.getWidth(), image.getHeight(),
+        BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = combinedImage.createGraphics();
+        g2d.drawImage(newImage, 0, 0, null);
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+        
+        updateImage(labelImage, combinedImage);
     }
 
     public static void encodeSteganographicMessage(JFrame frame, JLabel labelImage) {
