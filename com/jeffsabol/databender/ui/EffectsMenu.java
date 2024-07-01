@@ -1,4 +1,11 @@
+package com.jeffsabol.databender.ui;
+
 import javax.swing.*;
+
+import com.jeffsabol.databender.DataBender;
+import com.jeffsabol.databender.effects.ImageEffects;
+
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -26,15 +33,15 @@ public class EffectsMenu {
         JMenuItem glitch = new JMenuItem("Glitch");
 
 
-        invertColors.setIcon(new ImageIcon(DataBender.getPath("IconImages", "Inverse.png").toString()));
-        randomColors.setIcon(new ImageIcon(DataBender.getPath("IconImages", "Random.png").toString()));
-        chromaticAberration.setIcon(new ImageIcon(DataBender.getPath("IconImages", "CB.png").toString()));
-        steganography.setIcon(new ImageIcon(DataBender.getPath("IconImages", "Hide.png").toString()));
-        decodeSecretMessage.setIcon(new ImageIcon(DataBender.getPath("IconImages", "Show.png").toString()));
-        pixelScratch.setIcon(new ImageIcon(DataBender.getPath("IconImages", "Scratch.png").toString()));
-        gBlur.setIcon(new ImageIcon(DataBender.getPath("IconImages", "Blur.png").toString()));
-        glitch.setIcon(new ImageIcon(DataBender.getPath("IconImages", "Glitch.png").toString()));
-        
+        invertColors.setIcon(new ImageIcon(DataBender.getPath("com", "jeffsabol", "databender", "ui", "icons", "Inverse.png").toString()));
+        randomColors.setIcon(new ImageIcon(DataBender.getPath("com", "jeffsabol", "databender", "ui", "icons", "Random.png").toString()));
+        chromaticAberration.setIcon(new ImageIcon(DataBender.getPath("com", "jeffsabol", "databender", "ui", "icons", "CB.png").toString()));
+        steganography.setIcon(new ImageIcon(DataBender.getPath("com", "jeffsabol", "databender", "ui", "icons", "Hide.png").toString()));
+        decodeSecretMessage.setIcon(new ImageIcon(DataBender.getPath("com", "jeffsabol", "databender", "ui", "icons", "Show.png").toString()));
+        pixelScratch.setIcon(new ImageIcon(DataBender.getPath("com", "jeffsabol", "databender", "ui", "icons", "Scratch.png").toString()));
+        gBlur.setIcon(new ImageIcon(DataBender.getPath("com", "jeffsabol", "databender", "ui", "icons", "Blur.png").toString()));
+        glitch.setIcon(new ImageIcon(DataBender.getPath("com", "jeffsabol", "databender", "ui", "icons", "Glitch.png").toString()));
+
         invertColors.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

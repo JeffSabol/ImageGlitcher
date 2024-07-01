@@ -26,6 +26,7 @@ Make chromatic aberration work with other file types besides transparent PNGs
    (if direction = x move picture left by x, etc)
    Let the user select colors for chromatic aberration
 */
+package com.jeffsabol.databender;
 
 public class Main {
     public static void main(String[] args) {

@@ -1,3 +1,5 @@
+package com.jeffsabol.databender.effects;
+
 // CREDIT TO: https://github.com/vishal-kataria/
 import java.awt.image.BufferedImage;
 import java.util.ArrayDeque;

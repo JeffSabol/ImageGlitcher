@@ -1,6 +1,9 @@
+package com.jeffsabol.databender;
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
+import com.jeffsabol.databender.ui.FileMenu;
+import com.jeffsabol.databender.ui.EffectsMenu;
 import javax.swing.*;
 
 public class DataBender {
@@ -9,7 +12,8 @@ public class DataBender {
 
     public void start() {
         frame = new JFrame("Data Bender");
-        frame.setIconImage(new ImageIcon(getPath("Glitch.png").toString()).getImage());
+        frame.setIconImage(new ImageIcon(getPath("com", "jeffsabol", "databender", "resources", "Glitch.png").toString()).getImage());
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
         labelImage = new JLabel();

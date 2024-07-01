@@ -1,3 +1,4 @@
+package com.jeffsabol.databender.effects;
 
 /* Jeff Sabol
  * ImageEffects.java - Contains static methods for image effects.

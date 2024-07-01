@@ -1,3 +1,5 @@
+package com.jeffsabol.databender.ui;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.Graphics;
+import com.jeffsabol.databender.DataBender;
 
 public class FileMenu {
     private JMenu menu;
@@ -25,10 +28,9 @@ public class FileMenu {
         JMenuItem clearImageItem = new JMenuItem("Clear Image");
         JMenuItem saveImageItem = new JMenuItem("Save Image");
 
-        openMenuItem.setIcon(new ImageIcon(DataBender.getPath("IconImages", "Open.png").toString())); // from https://www.flaticon.com/free-icon/open-folder-with-document_32743
-        clearImageItem.setIcon(new ImageIcon(DataBender.getPath("IconImages", "Wipe.png").toString())); // from http://www.onlinewebfonts.com/icon
-        saveImageItem.setIcon(new ImageIcon(DataBender.getPath("IconImages", "Save.png").toString()));
-    
+        openMenuItem.setIcon(new ImageIcon(DataBender.getPath("com", "jeffsabol", "databender", "ui", "icons", "Open.png").toString())); // from https://www.flaticon.com/free-icon/open-folder-with-document_32743
+        clearImageItem.setIcon(new ImageIcon(DataBender.getPath("com", "jeffsabol", "databender", "ui", "icons", "Wipe.png").toString())); // from http://www.onlinewebfonts.com/icon
+        saveImageItem.setIcon(new ImageIcon(DataBender.getPath("com", "jeffsabol", "databender", "ui", "icons", "Save.png").toString()));
 
         openMenuItem.addActionListener(new ActionListener() {
             @Override
