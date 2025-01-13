@@ -40,8 +40,6 @@ I welcome contributions to DataBender! If you have an idea for a new feature or 
 [![HzhQ7x1.md.png](https://iili.io/HzhQ7x1.md.png)](https://freeimage.host/i/HzhQ7x1)
 [![HzhZxLX.png](https://iili.io/HzhZxLX.png)](https://freeimage.host/)
 [![Hzht6Ku.png](https://iili.io/Hzht6Ku.png)](https://freeimage.host/)
-[![HzhDjWP.md.png](https://iili.io/HzhDjWP.md.png)](https://freeimage.host/i/HzhDjWP)
-[![HzhDS5v.md.png](https://iili.io/HzhDS5v.md.png)](https://freeimage.host/i/HzhDS5v)
 [![Hzhmacu.md.png](https://iili.io/Hzhmacu.md.png)](https://freeimage.host/i/Hzhmacu)
 [![HzhmjKF.md.png](https://iili.io/HzhmjKF.md.png)](https://freeimage.host/i/HzhmjKF)
 [![HYqfLGe.png](https://iili.io/HYqfLGe.png)](https://freeimage.host/)
